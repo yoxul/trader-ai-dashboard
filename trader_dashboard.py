@@ -3,45 +3,49 @@ import pandas as pd
 import joblib
 import os
 
-st.set_page_config(page_title="Trader AI Tahmin Paneli", layout="centered")
-st.title("🤖 Trader AI Otomatik Sinyal Paneli")
-st.markdown("Tüm modellerle `sample_data.csv` verisi test ediliyor...")
+st.set_page_config(page_title="Trader AI Simülasyon", layout="wide")
+st.title("🧪 Trader AI Simülasyon Paneli")
+st.markdown("Geçmiş verilerle `AL / SAT / BEKLE` sinyalleri")
 
-# Dosya yolları
-model_dir = "."
-sample_csv = "sample_data.csv"
+# Ayarlar
+csv_path = "btcusdt_1m.csv"
+model_path = "model/btcusdt_1m.pkl"
 
-# Girdi verisini yükle
-if not os.path.exists(sample_csv):
-    st.error(f"`{sample_csv}` dosyası bulunamadı.")
+# Veri kontrolü
+if not os.path.exists(csv_path):
+    st.error(f"`{csv_path}` bulunamadı.")
     st.stop()
 
-input_df = pd.read_csv(sample_csv)
-if input_df.shape[0] != 1:
-    st.warning("Uyarı: `sample_data.csv` dosyası tek bir satır içermelidir.")
+if not os.path.exists(model_path):
+    st.error(f"`{model_path}` modeli bulunamadı.")
     st.stop()
 
-# Tahminleri topla
-results = []
+# Veriyi oku
+df = pd.read_csv(csv_path)
 
-for filename in sorted(os.listdir(model_dir)):
-    if filename.endswith(".pkl"):
-        model_path = os.path.join(model_dir, filename)
-        try:
-            model = joblib.load(model_path)
-            pred = model.predict(input_df)[0]
+# Girdiler
+features = ['open', 'high', 'low', 'close', 'volume',
+            'ema_10', 'ema_20', 'ema_50', 'rsi_14',
+            'macd', 'macd_signal', 'macd_histogram']
 
-            label_map = {-1: "❌ SAT", 0: "⏳ BEKLE", 1: "✅ AL"}
-            tahmin = label_map.get(pred, "❓")
+# Modeli yükle
+model = joblib.load(model_path)
 
-            zaman_dilimi = filename.replace("btcusdt_", "").replace(".pkl", "")
-            results.append({"Zaman Dilimi": zaman_dilimi, "Tahmin": tahmin})
-        except Exception as e:
-            results.append({"Zaman Dilimi": filename, "Tahmin": f"HATA: {e}"})
+# Simülasyon: Tahmin sütununu ekle
+try:
+    df["tahmin"] = model.predict(df[features])
+    label_map = {-1: "❌ SAT", 0: "⏳ BEKLE", 1: "✅ AL"}
+    df["sinyal"] = df["tahmin"].map(label_map)
+except Exception as e:
+    st.error(f"Model tahmini yapılamadı: {e}")
+    st.stop()
+
+# Tarih/saat sütunu varsa öne al
+if "timestamp" in df.columns:
+    df["timestamp"] = pd.to_datetime(df["timestamp"])
+    df.set_index("timestamp", inplace=True)
 
 # Sonuçları göster
-if results:
-    st.success("✅ Tahminler tamamlandı.")
-    st.table(pd.DataFrame(results))
-else:
-    st.warning("Hiç model bulunamadı.")
+st.dataframe(df[["close", "rsi_14", "macd", "sinyal"]].tail(50), height=600)
+
+st.success("✅ Simülasyon tamamlandı. Son 50 satır aşağıda gösteriliyor.")
