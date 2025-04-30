@@ -8,7 +8,7 @@ st.title("🤖 Trader AI Otomatik Sinyal Paneli")
 st.markdown("Tüm modellerle `sample_data.csv` verisi test ediliyor...")
 
 # Dosya yolları
-model_dir = "model"
+model_dir = ""
 sample_csv = "sample_data.csv"
 
 # Girdi verisini yükle
