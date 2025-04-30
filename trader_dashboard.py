@@ -14,7 +14,7 @@ available_intervals = ["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "
 # Zaman dilimi seçimi
 selected_interval = st.selectbox("Zaman Dilimini Seçin", available_intervals)
 
-model_path = f"model/btcusdt_{selected_interval}.pkl"
+model_path = f"btcusdt_{selected_interval}.pkl"
 
 # Modeli yükle
 @st.cache_resource
