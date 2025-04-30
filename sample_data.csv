@@ -1,0 +1,2 @@
+open,high,low,close,volume,ema_10,ema_20,ema_50,rsi_14,macd,macd_signal,macd_histogram
+40000,40200,39800,40100,1234,40050,40030,39980,55.4,1.1,0.9,0.2
