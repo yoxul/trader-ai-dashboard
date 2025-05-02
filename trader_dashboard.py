@@ -46,6 +46,6 @@ if "timestamp" in df.columns:
     df.set_index("timestamp", inplace=True)
 
 # Sonuçları göster
-st.dataframe(df[["close", "rsi_14", "macd", "sinyal"]].tail(50), height=600)
+st.dataframe(df[["close", "rsi_14", "macd", "sinyal"]].tail(999), height=600)
 
-st.success("✅ Simülasyon tamamlandı. Son 50 satır aşağıda gösteriliyor.")
+st.success("✅ Simülasyon tamamlandı. Son 999 satır aşağıda gösteriliyor.")
