@@ -3,7 +3,7 @@ import pandas as pd
 import joblib
 import os
 
-st.set_page_config(page_title="Trader AI Simülasyon", layout="wide")
+st.set_page_config(page_title="Trader 33333 AI Simülasyon", layout="wide")
 st.title("💸 Trader AI Simülasyon Paneli + Backtest")
 st.markdown("Geçmiş verilerle `AL / SAT / BEKLE` sinyallerine göre sermaye simülasyonu")
 
