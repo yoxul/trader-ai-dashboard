@@ -8,7 +8,7 @@ st.title("🧪 Trader AI Simülasyon Paneli")
 st.markdown("Geçmiş verilerle `AL / SAT / BEKLE` sinyalleri")
 
 # Ayarlar
-csv_path = "btcusdt_1m.csv"
+csv_path = "btcusdt_1m_small.csv"
 model_path = "btcusdt_1m.pkl"
 
 # Veri kontrolü
