@@ -68,6 +68,19 @@ for i, row in df.iterrows():
 net_value = cash + coin * df["close"].iloc[-1]
 profit_pct = (net_value - initial_cash) / initial_cash * 100
 
+# ✅ Tanılayıcı yazdırmalar
+st.write("🧪 Tanılama: Simülasyon Sonuçları")
+st.write("Son fiyat (close):", df['close'].iloc[-1])
+st.write("Nakit (cash):", cash)
+st.write("Coin miktarı:", coin)
+st.write("Net toplam değer (cash + coin):", net_value)
+st.write("Kar/Zarar (%) :", profit_pct)
+
+# Eksik sütun kontrolü
+missing_cols = [col for col in features if col not in df.columns]
+if missing_cols:
+    st.warning(f"❗ Eksik sütunlar: {missing_cols}")
+
 # Sonuç tablosu
 result_df = pd.DataFrame(history, columns=["timestamp", "işlem", "fiyat", "nakit($)", "coin miktarı"])
 result_df.set_index("timestamp", inplace=True)
